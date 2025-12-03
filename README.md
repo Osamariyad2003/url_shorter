@@ -96,35 +96,6 @@ Once you have installed MongoDB Compass, you can connect to your MongoDB host by
 ## METHODOLOGY
 This is a section where the working and the final result for the application is written below. The exact details on how to use this application from the perspective of the user is given. Client Server Architecture is a computing model in which the server hosts, delivers and manages most of the resources and services to be consumed by the client. This type of architecture has one or more client computers connected to a central server over a network or internet connection. This system shares computing resources. Client/server architecture is also known as a networking computing model or client/server network because all the requests and services are delivered over a network.
 
-### Creating Short URL from Full URL
-User inputs the full URL into the input field URL on the index page http://localhost:5000/. When the form is submitted by clicking the Shrink button, the full URL is sent to the server via a POST request to the "/shorturls" endpoint. The server then creates a new "urls" entity with the full URL and a generated shortened URL. The shortened URL is then displayed on the index page along with the full URL and the number of clicks in table format.
-![image](https://github.com/CGreenP/URL-Shortener/assets/56307530/9e87ff34-4ef1-4390-b4ca-7cfcb80d574a)
-<p align="center"><i>Index Page</i></p>
-
-![image](https://github.com/CGreenP/URL-Shortener/assets/56307530/763d6549-3c01-4d74-984f-43e156792176)
-<p align="center"><i>Entering a URL to be Shortened</i></p>
-
-![image](https://github.com/CGreenP/URL-Shortener/assets/56307530/3223b6d8-8c24-4829-9a3c-cb15c3d703a0)
-<p align="center"><i>Short URL gets created</i></p>
-
-### Redirecting clients from Short URL to Full URL
-When a user clicks on the shortened URL, a GET request is sent to the server with the shortened URL as a parameter. The server then looks up the "urls" entity in the database with the matching shortened URL and redirects the user to the full URL and increases the number of clicks.
-![image](https://github.com/CGreenP/URL-Shortener/assets/56307530/9635770a-951e-4dfd-9bd3-6eeff51f4d56)
-<p align="center"><i>Clicking on the Short URL</i></p>
-
-![image](https://github.com/CGreenP/URL-Shortener/assets/56307530/a02fe10a-261f-4245-94cd-193e05208d55)
-<p align="center"><i>Redirecting clients from Short URL to Full URL</i></p>
-
-![image](https://github.com/CGreenP/URL-Shortener/assets/56307530/6f66339e-4956-42a6-8077-258a44ec82a9)
-<p align="center"><i>Number of Clicks gets updated in the Index Page</i></p>
-
-### Deleting URLS
-When a user clicks the "Delete" button next to a URL on the index page, a DELETE request is sent to the server with the URL's ID as a parameter. The server then looks up the "urls" entity with the matching ID and deletes it from the database.
-![image](https://github.com/CGreenP/URL-Shortener/assets/56307530/cad01ff7-bbce-416b-b082-c5832dacdc0e)
-<p align="center"><i>Clicking on the Delete button to delete the short URL</i></p>
-
-![image](https://github.com/CGreenP/URL-Shortener/assets/56307530/6789f4df-6584-497b-b9f2-c2ff645e9939)
-<p align="center"><i>After deletion the Index Page</i></p>
 
 ## CONCLUSION
 In this project, we have created a simple URL shortener using Node.js, Express, MongoDB and Mongoose. We have used shortid to generate unique short URLs and EJS to render the front-end. We have also implemented basic CRUD operations for the URL model and handled redirection and error cases. This project demonstrates how to use web development technologies to create a useful and user-friendly application that can shorten long URLs and track their clicks.
