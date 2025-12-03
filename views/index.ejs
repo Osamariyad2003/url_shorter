@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <title>URL Shortener</title>
+    <style>
+      :root {
+        --bg-primary: #f8fafc;
+        --bg-secondary: #ffffff;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --accent-color: #3b82f6;
+        --accent-hover: #2563eb;
+        --border-color: #e2e8f0;
+        --shadow: rgba(0, 0, 0, 0.1);
+      }
+
+      [data-theme="ocean"] {
+        --bg-primary: #e0f2fe;
+        --bg-secondary: #ffffff;
+        --text-primary: #0c4a6e;
+        --text-secondary: #0369a1;
+        --accent-color: #0ea5e9;
+        --accent-hover: #0284c7;
+        --border-color: #bae6fd;
+        --shadow: rgba(14, 165, 233, 0.2);
+      }
+
+      [data-theme="sunset"] {
+        --bg-primary: #fff1f2;
+        --bg-secondary: #ffffff;
+        --text-primary: #881337;
+        --text-secondary: #be123c;
+        --accent-color: #f43f5e;
+        --accent-hover: #e11d48;
+        --border-color: #fecdd3;
+        --shadow: rgba(244, 63, 94, 0.2);
+      }
+
+      [data-theme="forest"] {
+        --bg-primary: #f0fdf4;
+        --bg-secondary: #ffffff;
+        --text-primary: #14532d;
+        --text-secondary: #166534;
+        --accent-color: #22c55e;
+        --accent-hover: #16a34a;
+        --border-color: #bbf7d0;
+        --shadow: rgba(34, 197, 94, 0.2);
+      }
+
+      [data-theme="dark"] {
+        --bg-primary: #0f172a;
+        --bg-secondary: #1e293b;
+        --text-primary: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --accent-color: #8b5cf6;
+        --accent-hover: #7c3aed;
+        --border-color: #334155;
+        --shadow: rgba(139, 92, 246, 0.3);
+      }
+
+      [data-theme="lavender"] {
+        --bg-primary: #faf5ff;
+        --bg-secondary: #ffffff;
+        --text-primary: #581c87;
+        --text-secondary: #7e22ce;
+        --accent-color: #a855f7;
+        --accent-hover: #9333ea;
+        --border-color: #e9d5ff;
+        --shadow: rgba(168, 85, 247, 0.2);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg-primary);
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+      }
+
+      .theme-switcher {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: var(--bg-secondary);
+        border-radius: 50px;
+        padding: 0.5rem;
+        box-shadow: 0 4px 20px var(--shadow);
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .theme-btn {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 3px solid transparent;
+      }
+
+      .theme-btn:hover {
+        transform: scale(1.1);
+      }
+
+      .theme-btn.active {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px var(--shadow);
+      }
+
+      .theme-btn.default { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+      .theme-btn.ocean { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
+      .theme-btn.sunset { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+      .theme-btn.forest { background: linear-gradient(135deg, #22c55e, #16a34a); }
+      .theme-btn.dark { background: linear-gradient(135deg, #1e293b, #0f172a); }
+      .theme-btn.lavender { background: linear-gradient(135deg, #a855f7, #9333ea); }
+
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      .card {
+        background: var(--bg-secondary);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 20px var(--shadow);
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+      }
+
+      .header-section {
+        text-align: center;
+        padding: 3rem 2rem;
+      }
+
+      .header-section h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .header-section p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+      }
+
+      .form-section h2,
+      .table-section h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .custom-input {
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.875rem 1.25rem;
+        font-size: 1rem;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+      }
+
+      .custom-input:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 4px var(--shadow);
+        outline: none;
+        background: var(--bg-secondary);
+      }
+
+      .btn-shrink {
+        background: var(--accent-color);
+        border: none;
+        border-radius: 12px;
+        padding: 0.875rem 2rem;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px var(--shadow);
+      }
+
+      .btn-shrink:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px var(--shadow);
+      }
+
+      .custom-table {
+        border-radius: 12px;
+        overflow: hidden;
+        border: none;
+        width: 100%;
+      }
+
+      .custom-table thead {
+        background: var(--accent-color);
+      }
+
+      .custom-table thead th {
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 1rem;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.5px;
+      }
+
+      .custom-table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .custom-table tbody tr:hover {
+        background-color: var(--bg-primary);
+        transform: scale(1.01);
+      }
+
+      .custom-table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        color: var(--text-primary);
+      }
+
+      .url-link {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        word-break: break-all;
+      }
+
+      .url-link:hover {
+        color: var(--accent-hover);
+        text-decoration: underline;
+      }
+
+      .short-url-badge {
+        background: var(--accent-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        display: inline-block;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+      }
+
+      .clicks-badge {
+        background: var(--accent-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+        min-width: 80px;
+        opacity: 0.9;
+      }
+
+      .btn-delete {
+        background: #ef4444;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+      }
+
+      .btn-delete:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-secondary);
+      }
+
+      .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+        color: var(--accent-color);
+      }
+
+      .empty-state p {
+        font-size: 1.125rem;
+        font-weight: 500;
+      }
+
+      .copy-btn {
+        background: transparent;
+        border: none;
+        color: var(--accent-color);
+        cursor: pointer;
+        padding: 0.25rem;
+        transition: all 0.2s ease;
+      }
+
+      .copy-btn:hover {
+        color: var(--accent-hover);
+        transform: scale(1.2);
+      }
+
+      @media (max-width: 768px) {
+        .header-section h1 {
+          font-size: 2rem;
+        }
+
+        .table-section {
+          padding: 1rem;
+          overflow-x: auto;
+        }
+
+        .custom-table {
+          font-size: 0.875rem;
+        }
+
+        .theme-switcher {
+          top: 10px;
+          right: 10px;
+          padding: 0.3rem;
+        }
+
+        .theme-btn {
+          width: 35px;
+          height: 35px;
+        }
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+      <button class="theme-btn default active" onclick="setTheme('default')" title="Default Blue"></button>
+      <button class="theme-btn ocean" onclick="setTheme('ocean')" title="Ocean Blue"></button>
+      <button class="theme-btn sunset" onclick="setTheme('sunset')" title="Sunset Red"></button>
+      <button class="theme-btn forest" onclick="setTheme('forest')" title="Forest Green"></button>
+      <button class="theme-btn dark" onclick="setTheme('dark')" title="Dark Mode"></button>
+      <button class="theme-btn lavender" onclick="setTheme('lavender')" title="Lavender Purple"></button>
+    </div>
+
+    <div class="container main-container">
+      <!-- Header Section -->
+      <div class="card header-section fade-in">
+        <h1><i class="bi bi-link-45deg"></i> URL Shortener</h1>
+        <p>Transform your long URLs into short, shareable links instantly</p>
+      </div>
+
+      <!-- Form Section -->
+      <div class="card form-section fade-in">
+        <h2>
+          <i class="bi bi-scissors"></i>
+          Shorten Your URL
+        </h2>
+        <form action="/shorturls" method="POST">
+          <div class="input-group">
+            <input
+              placeholder="Enter your long URL here..."
+              type="url"
+              name="fullUrl"
+              id="fullUrl"
+              class="form-control custom-input"
+              required
+            />
+            <button class="btn btn-shrink" type="submit">
+              <i class="bi bi-lightning-charge-fill"></i> Shrink URL
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Table Section -->
+      <div class="card table-section fade-in">
+        <h2>
+          <i class="bi bi-list-ul"></i>
+          Your Shortened URLs
+        </h2>
+
+        <% if (shorturls.length === 0) { %>
+          <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <p>No URLs yet. Start by shortening your first URL above!</p>
+          </div>
+        <% } else { %>
+          <div class="table-responsive">
+            <table class="table custom-table">
+              <thead>
+                <tr>
+                  <th><i class="bi bi-link"></i> Original URL</th>
+                  <th><i class="bi bi-hash"></i> Short URL</th>
+                  <th><i class="bi bi-bar-chart-fill"></i> Clicks</th>
+                  <th><i class="bi bi-trash"></i> Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% shorturls.forEach(shorturl => { %>
+                <tr>
+                  <td>
+                    <a href="<%= shorturl.full %>" target="_blank" class="url-link" title="<%= shorturl.full %>">
+                      <i class="bi bi-box-arrow-up-right"></i>
+                      <%= shorturl.full.length > 50 ? shorturl.full.substring(0, 50) + '...' : shorturl.full %>
+                    </a>
+                  </td>
+                  <td>
+                    <a href="/<%= shorturl.short %>" target="_blank" class="short-url-badge" title="Click to visit">
+                      <%= shorturl.short %>
+                    </a>
+                    <button class="copy-btn" onclick="copyToClipboard('http://localhost:5000/<%= shorturl.short %>')" title="Copy to clipboard">
+                      <i class="bi bi-clipboard"></i>
+                    </button>
+                  </td>
+                  <td>
+                    <span class="clicks-badge">
+                      <i class="bi bi-cursor-fill"></i>
+                      <%= shorturl.clicks %>
+                    </span>
+                  </td>
+                  <td>
+                    <form method="POST" action="/<%= shorturl._id %>" style="display: inline;">
+                      <input type="hidden" name="_method" value="DELETE" />
+                      <button class="btn btn-delete" type="submit" onclick="return confirm('Are you sure you want to delete this URL?')">
+                        <i class="bi bi-trash-fill"></i> Delete
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Theme switcher
+      function setTheme(theme) {
+        // Remove active class from all buttons
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+        
+        // Add active class to selected button
+        event.target.classList.add('active');
+        
+        // Set theme
+        if (theme === 'default') {
+          document.documentElement.removeAttribute('data-theme');
+        } else {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+        
+        // Save theme preference
+        localStorage.setItem('theme', theme);
+      }
+
+      // Load saved theme
+      document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme') || 'default';
+        if (savedTheme !== 'default') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+        
+        // Set active button
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+          if (btn.classList.contains(savedTheme)) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      });
+
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(function() {
+          const tooltip = document.createElement('div');
+          tooltip.textContent = 'Copied!';
+          tooltip.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--accent-color); color: white; padding: 1rem 2rem; border-radius: 8px; font-weight: 600; z-index: 9999; box-shadow: 0 4px 12px var(--shadow);';
+          document.body.appendChild(tooltip);
+          
+          setTimeout(() => {
+            tooltip.remove();
+          }, 2000);
+        }).catch(function(err) {
+          console.error('Failed to copy:', err);
+        });
+      }
+    </script>
+  </body>
+</html>
