@@ -1,7 +1,6 @@
 # URL-Shortener
-A URL Shortener With Node.js, Express, and MongoDB inspired by Web Dev Simplified.
-* Video link- https://youtu.be/SLpUKAGnm-g
-* Github link- https://github.com/WebDevSimplified/url-shortener
+A URL Shortener With Node.js, Express, and MongoDB 
+
 
 ## Introduction:
 In this project, we create a simple URL shortener using Node.js, Express, MongoDB, and EJS. We use the shortid module to generate unique identifiers for each URL and store them in a MongoDB database. We also keep track of the number of clicks for each shortened URL and display them in a table. We use EJS to render the HTML view and Bootstrap to style the user interface. We also implement a delete function to remove unwanted URLs from the database. Our URL shortener is a simple but functional web application that demonstrates the basic concepts of web development using Node.js and MongoDB.
@@ -36,13 +35,6 @@ Like all projects, this project has its advantages and disadvantages. It’s imp
 * The code does not have any security features implemented, such as authentication or input validation, which can make it vulnerable to attacks such as SQL injection or cross-site scripting (XSS).
 * The application relies on third-party libraries, which can introduce potential vulnerabilities or compatibility issues if not kept up-to-date.
 
-### Limitations of Existing Techniques or Methods
-* Existing URL shortener services may have limited storage capacity or bandwidth, which may affect their performance or availability. They may also impose restrictions on the number or length of URLs that can be shortened or stored.
-* Existing URL shortener services may have privacy or security issues, as they may collect or share the user’s data or browsing history. They may also expose the user to malicious or harmful URLs that may contain viruses, malware, or phishing scams.
-* Existing URL shortener services may have usability or compatibility issues, as they may not support all types of URLs or platforms. They may also have inconsistent or confusing user interfaces that may frustrate or confuse the user.
-* Existing URL shortening techniques or methods often rely on a centralized service to store and redirect URLs, which can be a single point of failure and raise concerns about privacy and security.
-* The generated short URLs can be easily guessed or brute-forced, leading to potential security vulnerabilities.
-* Some existing techniques may not be scalable or efficient enough to handle a large volume of requests, especially in the case of high-traffic websites.
 
 ## ARCHITECTURE
 These are the architectural designs of our application which will give a basic understanding of workings by our application. Some of the designs are described in a summarized way by which you can understand the structure.
